@@ -1,15 +1,19 @@
-FROM node:18
+FROM node:lts-buster
 
-RUN apt update -y && apt upgrade -y
 RUN apt-get update && \
   apt-get install -y \
-  neofetch \
-  coreutils \
-  ffmpeg && \
+  ffmpeg \
+  imagemagick \
+  webp && \
+  apt-get upgrade -y && \
   rm -rf /var/lib/apt/lists/*
-  
+
 COPY package.json .
-COPY . .
-RUN npm i -g pm2
+
 RUN npm install
-CMD pm2-runtime .
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
